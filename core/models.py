@@ -8,8 +8,8 @@ import shortuuid
 
 # Choice
 VISIBILITY = (
-    ("Only Me", "Only Me"),
     ("Everyone", "Everyone"),
+    ("Only Me", "Only Me"),
 )
 
 FRIEND_REQUEST = (
@@ -40,7 +40,7 @@ class Post(models.Model):
     active = models.BooleanField(default=True)
     slug = models.SlugField(unique=True)
     views = models.PositiveIntegerField(default=0)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         if self.title:
@@ -175,7 +175,6 @@ class Group(models.Model):
     
     def memeber_count(self):
         return self.memebers.all().count()
-    
 
 class GroupPost(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, blank=True)
@@ -269,5 +268,4 @@ class PagePost(models.Model):
 
     def thumbnail(self):
         return mark_safe('<img src="/media/%s" width="50" height="50" object-fit:"cover" style="border-radius: 5px;" />' % (self.image))
-    
     
