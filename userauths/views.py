@@ -49,19 +49,22 @@ def LoginView(request):
 
         try:
             user = User.objects.get(email)
+
             user = authenticate(request, email=email, password=password)
+
             if user is not None:
                 login(request, user)
                 messages.warning(request, "you are already logged in")
+                return redirect('core:feed')
             else:
                 messages.warning(request, "Username or password does not exist")
-                return redirect("userauths:sign-up") 
+                # return redirect("userauths:sign-up") 
         except:
             messages.error(request, "User does not exist")
     return HttpResponseRedirect("/")
 
-# LogoutVirw
+# LogoutView
 def LogoutView(request):
     logout(request)
     messages.warning(request, "you are logged out")
-    return redirect("userauths:sign-up")
+    return redirect("userauths:sign-in")

@@ -1,17 +1,21 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.utils.text import slugify
 from django.http import JsonResponse
 from django.utils.timesince import timesince
 from django.views.decorators.csrf import csrf_exempt
-
+from django.contrib.auth.decorators import login_required
 from core.models import Post
 
 import shortuuid
 # Create your views here.
+
+@login_required
 def index(request):
+    if not request.user.is_authenticated:
+        return redirect("userauths:sign-in")
     # all func must return something
     posts = Post.objects.filter(active=True, visibility="Everyone").order_by("-id")
-    context = {"posts" : posts}
+    context = {"posts":posts}
     return render(request, "core/index.html", context) # /:slash
 
 @csrf_exempt
@@ -46,4 +50,27 @@ def create_post(request):
             return JsonResponse({'error': 'Invalid post data'})
 
     return JsonResponse({"data":"Sent"})
-        
+
+def like_post(request):
+    id = request.GET['id']
+    post = Post.objects.get(id = id)
+    user = request.user
+    bool = False
+
+    if user in post.likes.all():
+        post.likes.remove(user) # already have save() function method
+        bool = False
+    else:
+        post.likes.add(user)
+        bool = True
+    
+    data = {
+        "bool":bool,
+        "likes":post.likes.all().count()
+    }
+    return JsonResponse({"data":data}) #key:values
+    
+
+
+
+
