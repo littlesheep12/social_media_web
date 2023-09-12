@@ -39,9 +39,9 @@ def RegisterView(request):
 
 # LoginView
 def LoginView(request):
-    if request.user.is_authenticated:
-        messages.warning(request, f"Hey {request.user.username}, you are already logged in")
-        return redirect('core:feed')
+    # if request.user.is_authenticated:
+    #     messages.warning(request, f"Hey {request.user.username}, you are already logged in")
+    #     return redirect('core:feed')
     
     if request.method == "POST":
         email = request.POST.get("email")
@@ -57,7 +57,7 @@ def LoginView(request):
                 messages.warning(request, "you are already logged in")
                 return redirect('core:feed')
             else:
-                messages.warning(request, "Username or password does not exist")
+                messages.error(request, "Username or password does not exist")
                 # return redirect("userauths:sign-up") 
         except:
             messages.error(request, "User does not exist")

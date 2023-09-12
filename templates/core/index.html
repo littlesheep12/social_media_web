@@ -159,7 +159,7 @@
                                     {% endif %}
 
                                     <div class="p-4 space-y-3">
-                                        <!-- button -->
+                                        <!-- post button -->
                                         <div class="flex space-x-4 lg:font-bold">
                                             <a style="cursor: pointer" class="flex items-center space-x-2">
                                                 <!-- <div class="p-2 rounded-full lg:bg-gray-100 dark:bg-gray-600"> -->
@@ -210,62 +210,60 @@
                                             {% endif %}
                                         </div>
 
-                                        <div class="border-t py-4 space-y-4 dark:border-gray-600">
-                                            <div class="flex">
-                                                <div class="w-10 h-10 rounded-full relative flex-shrink-0">
-                                                    <img src="{% static 'assets/images/avatars/avatar-1.jpg' %}" alt="" class="absolute h-full rounded-full w-full">
-                                                </div>
-                                                <div>
-                                                    <div class="text-gray-700 py-2 px-3 rounded-md bg-gray-100 relative lg:ml-5 ml-2 lg:mr-12  dark:bg-gray-800 dark:text-gray-100">
-                                                        <p class="leading-6">In ut odio libero vulputate
-                                                            <urna class="i uil-heart"></urna> <i class="uil-grin-tongue-wink"> </i> </p>
-                                                        <div class="absolute w-3 h-3 top-3 -left-1 bg-gray-100 transform rotate-45 dark:bg-gray-800"></div>
+                                        <div class="border-t py-4 space-y-4 dark:border-gray-600" id="comment-div{{p.id}}">
+                                            
+                                            {% for c in p.post_comments|slice:"3" %}
+                                                <div class="flex card shadow p-2">
+                                                    <div class="w-10 h-10 rounded-full relative flex-shrink-0">
+                                                        <img src="{{c.user.profile.image.url}}" alt="" class="absolute h-full rounded-full w-full">
                                                     </div>
-                                                    <div class="text-sm flex items-center space-x-3 mt-2 ml-5">
-                                                        <a href="#" class="text-red-600"> <i class="uil-heart"></i> Love </a>
-                                                        <a href="#"> Replay </a>
-                                                        <span> 3d </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="flex">
-                                                <div class="w-10 h-10 rounded-full relative flex-shrink-0">
-                                                    <img src="{% static 'assets/images/avatars/avatar-1.jpg' %}" alt="" class="absolute h-full rounded-full w-full">
-                                                </div>
-                                                <div>
-                                                    <div class="text-gray-700 py-2 px-3 rounded-md bg-gray-100 relative lg:ml-5 ml-2 lg:mr-12  dark:bg-gray-800 dark:text-gray-100">
-                                                        <p class="leading-6"> sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. David !<i class="uil-grin-tongue-wink-alt"></i> </p>
-                                                        <div class="absolute w-3 h-3 top-3 -left-1 bg-gray-100 transform rotate-45 dark:bg-gray-800"></div>
-                                                    </div>
-                                                    <div class="text-xs flex items-center space-x-3 mt-2 ml-5">
-                                                        <a href="#" class="text-red-600"> <i class="uil-heart"></i> Love </a>
-                                                        <a href="#"> Replay </a>
-                                                        <span> 3d </span>
+                                                    <div>
+                                                        <div class="text-gray-700 py-2 px-3 rounded-md bg-gray-100 relative lg:ml-5 ml-2 lg:mr-12  dark:bg-gray-800 dark:text-gray-100">
+                                                            <p class="leading-6">{{c.comment}}</p>
+                                                            <div class="absolute w-3 h-3 top-3 -left-1 bg-gray-100 transform rotate-45 dark:bg-gray-800"></div>
+                                                        </div>
+                                                        <!-- like comment -->
+                                                        <div class="text-sm flex items-center space-x-3 mt-2 ml-5">
+                                                            <a id="like-comment-btn" data-like-comment="{{c.id}}" class="like-comment{{c.id}} text-red-500" {% if request.user in c.likes.all %} style="color: red;" {% else %} style="color: gray; cursor: pointer;"  {% endif %} > <i id="comment-icon{{c.cid}}" class=" fas fa-heart  "></i></a> <small><span class="" id="comment-likes-count{{c.id}}">{{ c.likes.all.count }}</span></small> 
+                                                            <a href="#"> Reply </a> 
+                                                            <span> {{c.date|timesince}} ago </span>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-
+                                            {% empty %}
+                                                <div class="flex">
+                                                    <div>
+                                                        <div class="text-gray-700 py-2 px-3 rounded-md bg-gray-100 relative lg:ml-5 ml-2 lg:mr-12  dark:bg-gray-800 dark:text-gray-100">
+                                                            <p class="leading-6">No Comment Yet</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
                                         </div>
-
-                                        <a href="#" class="hover:text-blue-600 hover:underline">  Veiw 8 more Comments </a>
-
+                                        
+                                        {% if p.post_comments.count > 0 %}
+                                            <a href="#" class="hover:text-blue-600 hover:underline">  Veiw All {{p.post_comments.count}} Comments </a>
+                                        {% endif %}
+                                            
+                                        
                                         <div class="bg-gray-100 rounded-full relative dark:bg-gray-800 border-t">
-                                            <input placeholder="Add your Comment.." class="bg-transparent max-h-10 shadow-none px-5">
+                                            <input placeholder="Add your Comment..." id="comment-input{{p.id}}" data-comment-input="{{p.id}}" class="bg-transparent max-h-10 shadow-none px-5 comment-input{{p.id}}">
                                             <div class="-m-0.5 absolute bottom-0 flex items-center right-3 text-xl">
-                                                <a href="#">
+                                                <!-- <a href="#">
                                                     <ion-icon name="happy-outline" class="hover:bg-gray-200 p-1.5 rounded-full"></ion-icon>
-                                                </a>
-                                                <a href="#">
+                                                </a> -->
+                                                <!-- <a href="#">
                                                     <ion-icon name="image-outline" class="hover:bg-gray-200 p-1.5 rounded-full"></ion-icon>
-                                                </a>
-                                                <a href="#">
+                                                </a> -->
+                                                <!-- <a href="#">
                                                     <ion-icon name="link-outline" class="hover:bg-gray-200 p-1.5 rounded-full"></ion-icon>
+                                                </a> -->
+                                                <a style="cursor: pointer" id="comment-btn" class="comment-btn{{p.id}}" data-comment-btn="{{p.id}}">
+                                                    <ion-icon name="send-outline" class="hover:bg-gray-200 p-1.5 rounded-full"></ion-icon>
                                                 </a>
                                             </div>
                                         </div>
-
                                     </div>
-
                                 </div>
                             {% endfor %}
                         </div>

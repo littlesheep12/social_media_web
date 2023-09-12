@@ -9,5 +9,6 @@ urlpatterns = [
     # Ajax URLs
     path("create-post/", views.create_post, name="create-post"),
     path("like-post/", views.like_post, name="like-post"),
-
+    path("comment-post/", views.comment_on_post, name="comment-post"),
+    path("like-comment/", views.like_comment, name="like-comment"),
 ]

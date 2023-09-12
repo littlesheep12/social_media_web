@@ -128,7 +128,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
@@ -150,11 +150,11 @@ LOGOUT_REDIRECT_URL = "userauths:sign-up"
 
 # Jazzmin
 JAZZMIN_SETTINGS = {
-    'site_header': "Facebook Clone",
+    'site_header': "Northeastern University",
     'site_brand': "Connecting people together...",
-    'site_logo': "images/logo.png",
+    #'site_logo': "assets/images/neu_logo.png",
     'copyright':  "All Right Reserved 2023",
-    "welcome_sign": "Welcome to Facebook Admin, Login Now.",
+    "welcome_sign": "Welcome to NEU Admin, Login Now.",
     "topmenu_links": [
 
     ],
