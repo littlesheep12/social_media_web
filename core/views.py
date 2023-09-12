@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.utils.timesince import timesince
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from core.models import Post, Comment
+from core.models import Post, Comment, ReplyComment
 
 import shortuuid
 # Create your views here.
@@ -95,7 +95,7 @@ def comment_on_post(request):
     }
     return JsonResponse({"data":data})
 
-# Like comment
+# Like Comment
 def like_comment(request):
     id = request.GET["id"]
     comment = Comment.objects.get(id = id)
@@ -113,4 +113,45 @@ def like_comment(request):
         "bool" : bool,
         "likes" : comment.likes.all().count()
     }
+    return JsonResponse({"data":data})
+
+# Reply Comment
+def reply_comment(request):
+    id = request.GET['id']
+    reply = request.GET['reply']
+
+    comment = Comment.objects.get(id=id)
+    user = request.user
+
+    new_reply = ReplyComment.objects.create(
+        comment=comment,
+        reply=reply,
+        user=user
+    )
+
+    # # Notifications system
+    # if comment.user != user:
+    #     send_notification(comment.user, user, comment.post, comment, noti_comment_replied)
+
+    data = {
+        "bool":True,
+        'reply':new_reply.reply,
+        "profile_image":new_reply.user.profile.image.url,
+        "date":timesince(new_reply.date),
+        "reply_id":new_reply.id,
+        "post_id":new_reply.comment.post.id,
+    }
+    
+    return JsonResponse({"data":data})
+
+# Delete Comment
+def delete_commnet(request):
+    id = request.GET['id']
+    comment = Comment.objects.get(id=id)
+    comment.delete()
+
+    data = {
+        "bool": True
+    }
+
     return JsonResponse({"data":data})

@@ -191,15 +191,29 @@ $(document).ready(function() {
                                         <img src="'+ response.data.profile_image +'" alt="" class="absolute h-full rounded-full w-full">\
                                     </div>\
                                     <div>\
-                                        <div class="text-gray-700 py-2 px-3 rounded-md bg-gray-100 relative lg:ml-5 ml-2 lg:mr-12  dark:bg-gray-800 dark:text-gray-100">\
+                                        <div class="text-gray-700 py-2 px-3 rounded-md bg-gray-100 relative lg:ml-5 ml-2 lg:mr-12  dark:bg-gray-800 dark:text-gray-100 flex items-center">\
                                             <p class="leading-6">'+ response.data.comment +'\
                                             </p>\
                                             <div class="absolute w-3 h-3 top-3 -left-1 bg-gray-100 transform rotate-45 dark:bg-gray-800"></div>\
                                         </div>\
                                         <div class="text-sm flex items-center space-x-3 mt-2 ml-5">\
-                                        <a id="like-comment-btn" data-like-comment="'+response.data.comment_id+'" class="like-comment'+response.data.comment_id+' text-red-500" style="color: gray;" > <i id="comment-icon'+response.data.comment_id+'" class=" fas fa-heart  "></i></a> <small><span class="" id="comment-likes-count'+response.data.comment_id+'">0</span></small> \
-                                            <a href="#"> Reply </a>\
-                                            <span> '+ response.data.comment +' ago </span>\
+                                            <a id="like-comment-btn" data-like-comment="'+ response.data.comment_id +'" class="like-comment'+ response.data.comment_id +' text-red-500" style="color: gray;" > <i id="comment-icon'+ response.data.comment_id +'" class=" fas fa-heart  "></i></a> <small><span class="" id="comment-likes-count'+response.data.comment_id+'">0</span></small> \
+                                            <details>\
+                                                <summary><div class="">Reply</div></summary>\
+                                                <details-menu role="menu" class="origin-topf-right relative right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">\
+                                                <div class="pyf-1" role="none">\
+                                                    <div class="p-1 d-flex">\
+                                                        <input type="text"  class="with-border" name="" id="reply-input'+ response.data.comment_id +'">\
+                                                        <button id="reply-comment-btn" data-reply-comment-btn="'+ response.data.comment_id +'" type="submit" class="reply-comment-btn'+ response.data.comment_id +' block w-fulfl text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">\
+                                                            <ion-icon name="send"></ion-icon>\
+                                                        </button>\
+                                                    </div>\
+                                                </div>\
+                                                </details-menu>\
+                                            </details>\
+                                            <span> '+ response.data.date +' ago </span>\
+                                        </div>\
+                                        <div class="reply-div'+response.data.comment_id+'">\
                                         </div>\
                                     </div>\
                                 </div>\
@@ -245,6 +259,61 @@ $(document).ready(function() {
         })
     });
 
+    // Reply Comment
+    $(document).on("click", "#reply-comment-btn", function(){
+        let id = $(this).attr("data-reply-comment-btn")
+        let reply = $("#reply-input"+id).val()
+
+        console.log(id);
+        console.log(reply);
+
+        $.ajax({
+            url: "/reply-comment/",
+            dataType: "json",
+            data:{
+                "id":id,
+                "reply":reply,
+            },
+            success: function(response){
+
+                let newReply = '<div class="flex mr-12 mb-2 mt-2" style="margin-right: 20px;">\
+                                    <div class="w-10 h-10 rounded-full relative flex-shrink-0">\
+                                        <img src="'+ response.data.profile_image +'" style="width: 40px; height: 40px;" alt="" class="absolute h-full rounded-full w-full">\
+                                    </div>\
+                                    <div>\
+                                        <div class="text-gray-700 py-2 px-3 rounded-md bg-gray-100 relative lg:ml-5 ml-2 lg:mr-12 dark:bg-gray-800 dark:text-gray-100">\
+                                            <p class="leading-6">'+ response.data.reply +'</p>\
+                                            <div class="absolute w-3 h-3 top-3 -left-1 bg-gray-100 transform rotate-45 dark:bg-gray-800"></div>\
+                                        </div>\
+                                    </div>\
+                                </div>\
+                                '
+                $(".reply-div"+id).prepend(newReply);
+                $("#reply-input"+id).val("")
+        
+                console.log(response.data.bool);
+            }
+        })
+    });
+
+    // Delete Comment
+    $(document).on("click", "#delete-comment", function(){
+        let id = $(this).attr("data-delete-comment")
+        console.log(id);
+    
+        $.ajax({
+            url: "/delete-comment/",
+            dataType: "json",
+            data: {
+                "id":id
+            },
+            success: function(response){
+                console.log(response);
+                $("#comment-div"+id).addClass("d-none")
+            }
+        })
+    });
+    
 });
 
 

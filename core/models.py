@@ -118,6 +118,10 @@ class Comment(models.Model):
     class Meta:
         verbose_name_plural = "Comment"
 
+    def comment_replies(self):
+        comment_replies = ReplyComment.objects.filter(comment=self, active=True)
+        return comment_replies
+
 class ReplyComment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
