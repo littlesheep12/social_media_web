@@ -203,7 +203,7 @@ $(document).ready(function() {
                                                 <details-menu role="menu" class="origin-topf-right relative right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">\
                                                 <div class="pyf-1" role="none">\
                                                     <div class="p-1 d-flex">\
-                                                        <input type="text"  class="with-border" name="" id="reply-input'+ response.data.comment_id +'">\
+                                                        <input type="text" class="with-border" name="" id="reply-input'+ response.data.comment_id +'">\
                                                         <button id="reply-comment-btn" data-reply-comment-btn="'+ response.data.comment_id +'" type="submit" class="reply-comment-btn'+ response.data.comment_id +' block w-fulfl text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">\
                                                             <ion-icon name="send"></ion-icon>\
                                                         </button>\
@@ -314,6 +314,32 @@ $(document).ready(function() {
         })
     });
     
+    // Add Friend
+    $(document).on("click", "#add-friend", function(){
+        let id = $(this).attr("data-friend-id")
+        console.log(id);
+
+        $.ajax({
+            url: "/add-friend/",
+            dataType: "json",
+            data:{
+                "id":id
+            },
+            success: function(response){
+                console.log("Bool ==",response.bool);
+                if (response.bool == true) {
+                    $("#friend-text").html("<i class='fas fa-user-minus'></i> Cancel Request ")
+                    $(".add-friend"+id).addClass("bg-red-600")
+                    $(".add-friend"+id).removeClass("bg-blue-600")
+                }
+                if (response.bool == false) {
+                    $("#friend-text").html("<i class='fas fa-user-plus'></i> Add Friend ")
+                    $(".add-friend"+id).addClass("bg-blue-600")
+                    $(".add-friend"+id).removeClass("bg-red-600")
+                }
+            }
+        })
+    });
 });
 
 

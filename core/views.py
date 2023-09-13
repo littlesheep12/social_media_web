@@ -4,7 +4,9 @@ from django.http import JsonResponse
 from django.utils.timesince import timesince
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from core.models import Post, Comment, ReplyComment
+
+from core.models import Post, Comment, ReplyComment, Friend, FriendRequest
+from userauths.models import User
 
 import shortuuid
 # Create your views here.
@@ -17,6 +19,13 @@ def index(request):
     posts = Post.objects.filter(active=True, visibility="Everyone").order_by("-id")
     context = {"posts":posts}
     return render(request, "core/index.html", context) # /:slash
+
+@login_required
+def post_detail(request, slug):
+    post = Post.objects.get(active=True, visibility="Everyone", slug=slug)
+    context = {"p":post}
+    return render(request, "core/post-detail.html", context)
+
 
 @csrf_exempt
 def create_post(request):
@@ -155,3 +164,27 @@ def delete_commnet(request):
     }
 
     return JsonResponse({"data":data})
+
+# Add Friend
+def add_friend(request):
+    sender = request.user
+    receiver_id = request.GET['id']
+    bool = False
+
+    if sender.id == int(receiver_id):
+        return JsonResponse({"error" : "You cannot send a friend request to yourself"})
+    
+    receiver = User.objects.get(id=receiver_id)
+
+    try:
+        friend_request = FriendRequest.objects.get(sender=sender, receiver=receiver)
+        if friend_request:
+            friend_request.delete()
+        bool = False
+        return JsonResponse({"error" : "Cancelled", "bool" : bool})    
+    
+    except FriendRequest.DoesNotExist:
+        friend_request = FriendRequest(sender=sender, receiver=receiver)
+        friend_request.save()
+        bool = True
+        return JsonResponse({"success" : "Sent", "bool" : bool})   

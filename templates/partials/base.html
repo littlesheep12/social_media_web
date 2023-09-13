@@ -43,7 +43,7 @@
                         </span>
 
                         <div id="logo">
-                            <a href="feed.html"> 
+                            <a href="{% url 'core:feed' %}"> 
                                 <img src="{% static 'assets/images/getsitelogo.png' %}" alt="">
                                 <!-- <img src="{% static 'assets/images/getsitelogo.png' %}" class="logo_mobile" alt=""> -->
                             </a>
@@ -96,7 +96,9 @@
                     <div class="right_side">
 
                         <div class="header_widgets">
+                            <!-- Upgrade -->
                             <a href="pages-upgrade.html" class="is_link">  Upgrade </a>
+                            <!-- Cart -->
                             <a href="#" class="is_icon" uk-tooltip="title: Cart">
                                 <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path></svg>
                             </a>
@@ -207,6 +209,56 @@
                                 </div>
                             </div>
 
+                            <!-- Friend Request -->
+                            <a href="#" class="is_icon" uk-tooltip="title: Friend Requests">
+                                <i class="fas fa-user-plus text-gray-800"></i>
+                                <span>{{ friend_request.all.count }}</span>
+                            </a>
+                            <div uk-drop="mode: click" class="header_dropdown">
+                                <div class="dropdown_scrollbar" data-simplebar>
+                                    <div class="drop_headline">
+                                        <h4>Friend Requests</h4>
+                                        <div class="btn_action">
+                                            <a href="#" data-tippy-placement="left" title="Notifications">
+                                                <ion-icon name="settings-outline"></ion-icon>
+                                            </a>
+                                            <a href="#" data-tippy-placement="left" title="Mark as read all">
+                                                <ion-icon name="checkbox-outline"></ion-icon>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <ul>
+                                        {% for f in friend_request %}
+                                            <li class="mt-3 mb-4 shadow p-3">
+                                                <a href="#">
+                                                    <div class="drop_avatar">
+                                                        <img src="{{f.sender.profile.image.url}}" alt="">
+                                                    </div>
+                                                    <span class="drop_icon bg-gradient-primary">
+                                                        <i class="icon-feather-thumbs-up"></i>
+                                                    </span>
+                                                    <div class="drop_text">
+                                                        <p> <strong>{{f.sender.profile.full_name}}</strong> send you a friend request. </p>
+                                                        <time> {{f.date|timesince}} ago </time>
+                                                    </div>
+                                                    <div class="d-flex" id="friend-request-button-div">
+                                                        <a id="accept-friend-request"  data-request-id="{{f.sender.id}}" class="accept-friend-request-hide{{f.sender.id}} flex items-center justify-center h-10 px-5 rounded-md bg-blue-600 text-white space-x-1.5 hover:text-white" style="margin-left: 5px;"> 
+                                                            <span style="cursor: pointer;" class="text-white accept-friend-request{{f.sender.id}}" id="friend-text"><i class="fas fa-user-plus"></i> Accept </span>
+                                                        </a>
+                                                        <a id="reject-friend-request"  data-request-id="{{f.sender.id}}" class="reject-friend-request-hide{{f.sender.id}} flex items-center justify-center h-10 px-5 rounded-md bg-red-600 text-white space-x-1.5 hover:text-white" style="margin-left: 5px;"> 
+                                                            <span style="cursor: pointer;" class="text-white reject-friend-request{{f.sender.id}}" id="friend-text"><i class="fas fa-user-minus"></i> Reject </span>
+                                                        </a>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        {% empty %}
+                                            <li>No Friend Request </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Notification -->
                             <a href="#" class="is_icon" uk-tooltip="title: Notifications">
                                 <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path></svg>
                                 <span>3</span>
@@ -489,17 +541,17 @@
 
 
                             <a href="#">
-                                <img src="{% static 'assets/images/avatars/avatar-2.jpg' %}" class="is_avatar" alt="">
+                                <img src="{{ request.user.profile.image.url }}" class="is_avatar" alt="">
                             </a>
                             <div uk-drop="mode: click;offset:5" class="header_dropdown profile_dropdown">
 
-                                <a href="timeline.html" class="user">
+                                <a href="{% url 'userauths:my-profile' %}" class="user">
                                     <div class="user_avatar">
-                                        <img src="{% static 'assets/images/avatars/avatar-2.jpg' %}" alt="">
+                                        <img src="{{ request.user.profile.image.url }}" alt="">
                                     </div>
                                     <div class="user_name">
-                                        <div> Stella Johnson </div>
-                                        <span> @johnson</span>
+                                        <div> {{ request.user.profile.full_name }} </div>
+                                        <span> @{{ request.user.username }}</span>
                                     </div>
                                 </a>
                                 <hr>
@@ -508,7 +560,7 @@
                                     Upgrade To Premium  </span>
                                 </a>
                                 <hr>
-                                <a href="page-setting.html">
+                                <a href="{% url 'userauths:my-profile' %}">
                                     <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"></path></svg>
                                     My Account 
                                 </a>
@@ -554,7 +606,7 @@
             <div class="sidebar_inner" data-simplebar>
 
                 <ul>
-                    <li class="active"><a href="feed.html"> 
+                    <li class="active"><a href="{% url 'core:feed' %}"> 
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-blue-600"> 
                             <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
                         </svg>

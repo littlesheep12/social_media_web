@@ -2,9 +2,13 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 
+from core.models import Post, FriendRequest
 from userauths.forms import UserRegisterForm
 from userauths.models import Profile, User
+
+from core.models import Post
 # Create your views here.
 
 # RegisterView
@@ -48,7 +52,7 @@ def LoginView(request):
         password = request.POST.get("password")
 
         try:
-            user = User.objects.get(email)
+            user = User.objects.get(email=email)
 
             user = authenticate(request, email=email, password=password)
 
@@ -68,3 +72,43 @@ def LogoutView(request):
     logout(request)
     messages.warning(request, "you are logged out")
     return redirect("userauths:sign-in")
+
+@login_required
+def my_profile(request):
+    profile = request.user.profile
+    posts = Post.objects.filter(active=True, user=request.user).order_by("-id")
+    
+    context = {
+        "profile" : profile,
+        "posts" : posts,
+    }
+
+    return render(request, "userauths/my-profile.html", context)
+
+@login_required
+def friend_profile(request, username):
+    profile = Profile.objects.get(user__username=username) #user.username need to use __ instead of .
+    posts = Post.objects.filter(active=True, user=profile.user).order_by("-id")
+
+    bool = False
+    bool_friend = False
+
+    sender = request.user
+    receiver = profile.user
+
+    try:
+        friend_request = FriendRequest.objects.get(sender=sender, receiver=receiver)
+        if friend_request:
+            bool = True
+        else:
+            bool = False
+    except:
+        bool = False
+
+    context = {
+        "profile" : profile,
+        "posts" : posts,
+        "bool" : bool,
+    }
+
+    return render(request, "userauths/friend-profile.html", context)
