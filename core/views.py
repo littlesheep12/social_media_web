@@ -187,4 +187,40 @@ def add_friend(request):
         friend_request = FriendRequest(sender=sender, receiver=receiver)
         friend_request.save()
         bool = True
-        return JsonResponse({"success" : "Sent", "bool" : bool})   
+        return JsonResponse({"success" : "Sent", "bool" : bool}) 
+
+@csrf_exempt
+def accept_friend_request(request):
+    id = request.GET['id'] 
+
+    receiver = request.user
+    sender = User.objects.get(id=id)
+    
+    friend_request = FriendRequest.objects.filter(receiver=receiver, sender=sender).first()
+
+    receiver.profile.friends.add(sender)
+    sender.profile.friends.add(receiver)
+
+    friend_request.delete()
+
+    data = {
+        "message":"Accepted",
+        "bool":True,
+    }
+    return JsonResponse({'data': data})
+
+@csrf_exempt
+def reject_friend_request(request):
+    id = request.GET['id'] 
+
+    receiver = request.user
+    sender = User.objects.get(id=id)
+    
+    friend_request = FriendRequest.objects.filter(receiver=receiver, sender=sender).first()
+    friend_request.delete()
+
+    data = {
+        "message":"Rejected",
+        "bool":True,
+    }
+    return JsonResponse({'data': data})

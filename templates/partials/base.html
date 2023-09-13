@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Favicon -->
-    <link href="assets/images/favicon.png" rel="icon" type="image/png">
+    <link href="{% static 'assets/images/favicon.png' %}" rel="icon" type="image/png">
 
     <!-- Basic Page Needs
         ================================================== -->
@@ -234,9 +234,9 @@
                                                     <div class="drop_avatar">
                                                         <img src="{{f.sender.profile.image.url}}" alt="">
                                                     </div>
-                                                    <span class="drop_icon bg-gradient-primary">
+                                                    <!-- <span class="drop_icon bg-gradient-primary">
                                                         <i class="icon-feather-thumbs-up"></i>
-                                                    </span>
+                                                    </span> -->
                                                     <div class="drop_text">
                                                         <p> <strong>{{f.sender.profile.full_name}}</strong> send you a friend request. </p>
                                                         <time> {{f.date|timesince}} ago </time>
