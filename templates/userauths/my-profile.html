@@ -56,9 +56,9 @@
                             <li><a href="#">Timeline</a></li>
                             <li><a href="#">Friend <span>{{profile.friends.all.count}}</span> </a></li>
                             <li><a href="#">Photoes </a></li>
-                            <li><a href="#">Pages</a></li>
-                            <li><a href="#">Groups</a></li>
-                            <li><a href="#">Videos</a></li>
+                            <!-- <li><a href="#">Pages</a></li> -->
+                            <!-- <li><a href="#">Groups</a></li> -->
+                            <!-- <li><a href="#">Videos</a></li> -->
                         </ul>
                     </nav>
 
@@ -382,84 +382,73 @@
 
                     <!-- Sidebar -->
                     <div class="w-full space-y-6">
-
-                        <div class="widget card p-5">
-                            <h4 class="text-lg font-semibold"> About </h4>
-                            <ul class="text-gray-600 space-y-3 mt-3">
-                                <li class="flex items-center space-x-2">
-                                    <ion-icon name="home-sharp" class="rounded-full bg-gray-200 text-xl p-1 mr-3"></ion-icon>
-                                    Live In <strong> Cairo , Eygept  </strong>
-                                </li>
-                                <li class="flex items-center space-x-2">
-                                    <ion-icon name="globe" class="rounded-full bg-gray-200 text-xl p-1 mr-3"></ion-icon>
-                                    From <strong> Aden , Yemen  </strong>
-                                </li>
-                                <li class="flex items-center space-x-2">
-                                    <ion-icon name="heart-sharp" class="rounded-full bg-gray-200 text-xl p-1 mr-3"></ion-icon>
-                                    From <strong> Relationship  </strong>
-                                </li>
-                                <li class="flex items-center space-x-2">
-                                    <ion-icon name="logo-rss" class="rounded-full bg-gray-200 text-xl p-1 mr-3"></ion-icon>
-                                    Flowwed By <strong> 3,240 People </strong>
-                                </li>
-                            </ul>
-                            <div class="gap-3 grid grid-cols-3 mt-4">
-                                <img src="{% static 'assets/images/avatars/avatar-lg-2.jpg' %}" alt="" class="object-cover rounded-lg col-span-full">
-                                <img src="{% static 'assets/images/avatars/avatar-2.jpg' %}" alt="" class="rounded-lg">
-                                <img src="{% static 'assets/images/avatars/avatar-4.jpg' %}" alt="" class="rounded-lg">
-                                <img src="{% static 'assets/images/avatars/avatar-5.jpg' %}" alt="" class="rounded-lg">
-                            </div>
-                            <a href="#" class="button gray mt-3 w-full"> Edit </a>
-                        </div>
-
-                        <div class="widget card p-5 border-t">
-                            <div class="flex items-center justify-between mb-4">
-                                <div>
-                                    <h4 class="text-lg font-semibold"> Friends </h4>
-                                    <p class="text-sm"> 3,4510 Friends</p>
+                            <!-- About side view -->
+                            <div class="widget card p-5">
+                                <h4 class="text-lg font-semibold"> About </h4>
+                                <ul class="text-gray-600 space-y-3 mt-3">
+                                    <li class="flex items-center space-x-2">
+                                        <ion-icon name="home-sharp" class="rounded-full bg-gray-200 text-xl p-1 mr-3"></ion-icon>
+                                        
+                                        {% if profile.country and profile.city %}
+                                        Live In <strong> {{profile.city}}, {{profile.country}}  </strong>
+                                        {% else %}
+                                        Live In <strong> <a href="" class="dashed">Not added yet</a>  </strong>
+                                        {% endif %}
+                                    </li>
+                                    <li class="flex items-center space-x-2">
+                                        <ion-icon name="globe" class="rounded-full bg-gray-200 text-xl p-1 mr-3"></ion-icon>
+                                        {% if profile.country and profile.city %}
+                                        Live In <strong> {{profile.city}}, {{profile.country}}  </strong>
+                                        {% else %}
+                                        From <strong> <a href="" class="dashed">Not added yet</a>  </strong>
+                                        {% endif %}
+                                    </li>
+                                    <li class="flex items-center space-x-2">
+                                        <ion-icon name="heart-sharp" class="rounded-full bg-gray-200 text-xl p-1 mr-3"></ion-icon>
+                                        Relationship <strong> {{profile.relationship|title}}  </strong>
+                                    </li>
+                                    <li class="flex items-center space-x-2">
+                                        <ion-icon name="logo-rss" class="rounded-full bg-gray-200 text-xl p-1 mr-3"></ion-icon>
+                                        Followed By <strong> {{profile.followers.all.count}} People </strong>
+                                    </li>
+                                </ul>
+                                <div class="gap-3 grid grid-cols-3 mt-4">
+                                    <img src="assets/images/avatars/avatar-lg-2.jpg" alt="" class="object-cover rounded-lg col-span-full">
+                                    <img src="assets/images/avatars/avatar-2.jpg" alt="" class="rounded-lg">
+                                    <img src="assets/images/avatars/avatar-4.jpg" alt="" class="rounded-lg">
+                                    <img src="assets/images/avatars/avatar-5.jpg" alt="" class="rounded-lg">
                                 </div>
-                                <a href="#" class="text-blue-600 ">See all</a>
+                                <a href="#" class="button gray mt-3 w-full"> Edit </a>
                             </div>
-                            <div class="grid grid-cols-3 gap-3 text-gray-600 font-semibold">
-                                <a href="#">
-                                    <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2">
-                                        <img src="{% static 'assets/images/avatars/avatar-1.jpg' %}" alt="" class="w-full h-full object-cover absolute">
+
+                            <!-- Friend side view -->
+                            <div class="widget card p-5 border-t">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div>
+                                        <h4 class="text-lg font-semibold"> Friends </h4>
+                                        <p class="text-sm"> {{profile.friends.all.count}} Friend(s)</p>
                                     </div>
-                                    <div class="text-sm truncate"> Dennis Han </div>
-                                </a>
-                                <a href="#">
-                                    <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2">
-                                        <img src="{% static 'assets/images/avatars/avatar-2.jpg' %}" alt="" class="w-full h-full object-cover absolute">
-                                    </div>
-                                    <div class="text-sm truncate"> Erica Jones </div>
-                                </a>
-                                <a href="#">
-                                    <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2">
-                                        <img src="{% static 'assets/images/avatars/avatar-3.jpg' %}" alt="" class="w-full h-full object-cover absolute">
-                                    </div>
-                                    <div class="text-sm truncate"> Stella Johnson </div>
-                                </a>
-                                <a href="#">
-                                    <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2">
-                                        <img src="{% static 'assets/images/avatars/avatar-4.jpg' %}" alt="" class="w-full h-full object-cover absolute">
-                                    </div>
-                                    <div class="text-sm truncate"> Alex Dolgove</div>
-                                </a>
-                                <a href="#">
-                                    <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2">
-                                        <img src="{% static 'assets/images/avatars/avatar-5.jpg' %}" alt="" class="w-full h-full object-cover absolute">
-                                    </div>
-                                    <div class="text-sm truncate"> Jonathan Ali </div>
-                                </a>
-                                <a href="#">
-                                    <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2">
-                                        <img src="{% static 'assets/images/avatars/avatar-6.jpg' %}" alt="" class="w-full h-full object-cover absolute">
-                                    </div>
-                                    <div class="text-sm truncate"> Erica Han </div>
-                                </a>
+                                    <a href="#" class="text-blue-600 ">See all</a>
+                                </div>
+                                <div class="grid grid-cols-3 gap-3 text-gray-600 font-semibold">
+                                    
+                                    {% for f in profile.friends.all %}
+                                        <a href="{% url 'userauths:profile' f.profile.user.username %}">
+                                            <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2">
+                                                <img src="{{f.profile.image.url}}" style="width: 100%; height: 100px; object-fit: cover;" alt="" class="w-full h-full object-cover absolute">
+                                            </div>
+                                            <div class="text-sm truncate">{{f.profile.full_name}}</div>
+                                        </a>
+                                    {% empty %}
+                                    <a href="#">
+                                        
+                                        <div class="text-sm truncate"> No Friends Yet </div>
+                                    </a>
+                                    {% endfor %}
+
+                                </div>
+                                <a href="#" class="button gray mt-3 w-full">  See all </a>
                             </div>
-                            <a href="#" class="button gray mt-3 w-full">  See all </a>
-                        </div>
 
                         <div class="widget card p-5 border-t">
                             <div class="flex items-center justify-between mb-2">
@@ -527,42 +516,27 @@
 
                 <!-- Friends  -->
                 <div class="card md:p-6 p-2 max-w-3xl mx-auto">
-
-                    <h2 class="text-xl font-bold"> Friends</h2>
-
-                    <nav class="responsive-nav border-b">
-                        <ul>
-                            <li class="active"><a href="#" class="lg:px-2"> All Friends <span>{{profile.friends.all.count}}</span> </a></li>
-                            <!-- <li><a href="#" class="lg:px-2"> Recently added </a></li> -->
-                            <!-- <li><a href="#" class="lg:px-2"> Family </a></li> -->
-                            <!-- <li><a href="#" class="lg:px-2"> University </a></li> -->
-                        </ul>
-                    </nav>
-
+                    <h2 class="text-xl font-bold">All Friends</h2>
                     <div class="grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-x-2 gap-y-4 mt-3">
-                        
                         {% for f in profile.friends.all %}
-                            <div class="card p-2">
-                                <a href="timeline.html">
-                                    <img src="{{ f.profile.image.url }}" class="h-36 object-cover rounded-md shadow-sm w-full">
-                                </a>
-                                <div class="pt-3 px-1">
-                                    <a href="timeline.html" class="text-base font-semibold mb-0.5">{{ f.profile.full_name }}</a>
-                                    <p class="font-medium text-sm">{{ f.profile.friends.all.count }} Friends </p>
-                                    <button class="bg-blue-100 w-full flex font-semibold h-8 items-center justify-center mt-3 px-3 rounded-md text-blue-600 text-sm mb-1">
-                                        Add Friend
-                                    </button>
-                                </div>
+                        <div class="card p-2">
+                            <a href="{% url 'userauths:profile' f.profile.user.username %}">
+                                <img src="{{f.profile.image.url}}" class="h-36 object-cover rounded-md shadow-sm w-full">
+                            </a>
+                            <div class="pt-3 px-1">
+                                <a href="{% url 'userauths:profile' f.profile.user.username %}" class="text-base font-semibold mb-0.5">  {{f.profile.full_name|title}} </a>
+                                <p class="font-medium text-sm">{{f.profile.friends.all.count}} Friends </p>
+                                <button class="bg-blue-100 w-full flex font-semibold h-8 items-center justify-center mt-3 px-3 rounded-md text-blue-600 text-sm mb-1">
+                                    Follow
+                                </button>
                             </div>
+                        </div>
                         {% endfor %}
-
                     </div>
-
                     <div class="flex justify-center mt-6">
                         <a href="#" class="bg-white font-semibold my-3 px-6 py-2 rounded-full shadow-md dark:bg-gray-800 dark:text-white">
                             Load more ..</a>
                     </div>
-
                 </div>
 
                 <!-- Photos  -->
@@ -570,16 +544,8 @@
 
                     <div class="flex justify-between items-start relative md:mb-4 mb-3">
                         <div class="flex-1">
-                            <h2 class="text-xl font-bold"> Photos </h2>
-                            <nav class="responsive-nav style-2 md:m-0 -mx-4">
-                                <ul>
-                                    <li class="active"><a href="#">  Photos of you  <span> 230</span> </a></li>
-                                    <li><a href="#"> Recently added </a></li>
-                                    <li><a href="#"> Family </a></li>
-                                    <li><a href="#"> University </a></li>
-                                    <li><a href="#"> Albums </a></li>
-                                </ul>
-                            </nav>
+                            <h2 class="text-xl font-bold">My Photos </h2>
+                           
                         </div>
                         <a href="#offcanvas-create" uk-toggle class="flex items-center justify-center z-10 h-10 w-10 rounded-full bg-blue-600 text-white absolute right-0" data-tippy-placement="left" title="Create New Album">
                             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
@@ -587,126 +553,29 @@
                     </div>
 
                     <div class="grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-3 mt-5">
-                        <div>
-                            <div class="bg-green-400 max-w-full lg:h-44 h-36 rounded-lg relative overflow-hidden shadow uk-transition-toggle">
-                                <img src="{% static 'assets/images/post/img-1.jpg' %}" class="w-full h-full absolute object-cover inset-0">
-                                <!-- overly-->
-                                <div class="-bottom-12 absolute bg-gradient-to-b from-transparent h-1/2 to-gray-800 uk-transition-slide-bottom-small w-full"></div>
-                                <div class="absolute bottom-0 w-full p-3 text-white uk-transition-slide-bottom-small">
-                                    <div class="text-base"> Image description </div>
-                                    <div class="flex justify-between text-xs">
-                                        <a href="#">  Like</a>
-                                        <a href="#">  Comment </a>
-                                        <a href="#">  Share </a>
+                        
+                        {% for p in posts %}
+                            {% if p.image %}
+                                <div>
+                                    <div class="bg-green-400 max-w-full lg:h-44 h-36 rounded-lg relative overflow-hidden shadow uk-transition-toggle">
+                                        
+                                            <img src="{{p.image.url}}" class="w-full h-full absolute object-cover inset-0">
+                                            
+                                        <!-- overly-->
+                                        <div class="-bottom-12 absolute bg-gradient-to-b from-transparent h-1/2 to-gray-800 uk-transition-slide-bottom-small w-full"></div>
+                                        <div class="absolute bottom-0 w-full p-3 text-white uk-transition-slide-bottom-small">
+                                            <div class="text-base"> {{p.title}}</div>
+                                            <div class="flex justify-between text-xs">
+                                                <a href="#">  Like</a>
+                                                <a href="#">  Comment </a>
+                                                <a href="#">  Share </a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="bg-gray-200 max-w-full lg:h-44 h-36 rounded-lg relative overflow-hidden shadow uk-transition-toggle">
-                                <img src="{% static 'assets/images/post/img-2.jpg' %}" class="w-full h-full absolute object-cover inset-0">
-                                <!-- overly-->
-                                <div class="-bottom-12 absolute bg-gradient-to-b from-transparent h-1/2 to-gray-800 uk-transition-slide-bottom-small w-full"></div>
-                                <div class="absolute bottom-0 w-full p-3 text-white uk-transition-slide-bottom-small">
-                                    <div class="text-base"> Image description </div>
-                                    <div class="flex justify-between text-xs">
-                                        <a href="#">  Like</a>
-                                        <a href="#">  Comment </a>
-                                        <a href="#">  Share </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="bg-gray-200 max-w-full lg:h-44 h-36 rounded-lg relative overflow-hidden shadow uk-transition-toggle">
-                                <img src="{% static 'assets/images/avatars/avatar-3.jpg' %}" class="w-full h-full absolute object-cover inset-0">
-                                <!-- overly-->
-                                <div class="-bottom-12 absolute bg-gradient-to-b from-transparent h-1/2 to-gray-800 uk-transition-slide-bottom-small w-full"></div>
-                                <div class="absolute bottom-0 w-full p-3 text-white uk-transition-slide-bottom-small">
-                                    <div class="text-base"> Image description </div>
-                                    <div class="flex justify-between text-xs">
-                                        <a href="#">  Like</a>
-                                        <a href="#">  Comment </a>
-                                        <a href="#">  Share </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="bg-gray-200 max-w-full lg:h-44 h-36 rounded-lg relative overflow-hidden shadow uk-transition-toggle">
-                                <img src="{% static 'assets/images/post/img-4.jpg' %}" class="w-full h-full absolute object-cover inset-0">
-                                <!-- overly-->
-                                <div class="-bottom-12 absolute bg-gradient-to-b from-transparent h-1/2 to-gray-800 uk-transition-slide-bottom-small w-full"></div>
-                                <div class="absolute bottom-0 w-full p-3 text-white uk-transition-slide-bottom-small">
-                                    <div class="text-base"> Image description </div>
-                                    <div class="flex justify-between text-xs">
-                                        <a href="#">  Like</a>
-                                        <a href="#">  Comment </a>
-                                        <a href="#">  Share </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="bg-gray-200 max-w-full lg:h-44 h-36 rounded-lg relative overflow-hidden shadow uk-transition-toggle">
-                                <img src="{% static 'assets/images/avatars/avatar-7.jpg' %}" class="w-full h-full absolute object-cover inset-0">
-                                <!-- overly-->
-                                <div class="-bottom-12 absolute bg-gradient-to-b from-transparent h-1/2 to-gray-800 uk-transition-slide-bottom-small w-full"></div>
-                                <div class="absolute bottom-0 w-full p-3 text-white uk-transition-slide-bottom-small">
-                                    <div class="text-base"> Image description </div>
-                                    <div class="flex justify-between text-xs">
-                                        <a href="#">  Like</a>
-                                        <a href="#">  Comment </a>
-                                        <a href="#">  Share </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="bg-gray-200 max-w-full lg:h-44 h-36 rounded-lg relative overflow-hidden shadow uk-transition-toggle">
-                                <img src="{% static 'assets/images/avatars/avatar-4.jpg' %}" class="w-full h-full absolute object-cover inset-0">
-                                <!-- overly-->
-                                <div class="-bottom-12 absolute bg-gradient-to-b from-transparent h-1/2 to-gray-800 uk-transition-slide-bottom-small w-full"></div>
-                                <div class="absolute bottom-0 w-full p-3 text-white uk-transition-slide-bottom-small">
-                                    <div class="text-base"> Image description </div>
-                                    <div class="flex justify-between text-xs">
-                                        <a href="#">  Like</a>
-                                        <a href="#">  Comment </a>
-                                        <a href="#">  Share </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="bg-gray-200 max-w-full lg:h-44 h-36 rounded-lg relative overflow-hidden shadow uk-transition-toggle">
-                                <img src="{% static 'assets/images/post/img-1.jpg' %}" class="w-full h-full absolute object-cover inset-0">
-                                <!-- overly-->
-                                <div class="-bottom-12 absolute bg-gradient-to-b from-transparent h-1/2 to-gray-800 uk-transition-slide-bottom-small w-full"></div>
-                                <div class="absolute bottom-0 w-full p-3 text-white uk-transition-slide-bottom-small">
-                                    <div class="text-base"> Image description </div>
-                                    <div class="flex justify-between text-xs">
-                                        <a href="#">  Like</a>
-                                        <a href="#">  Comment </a>
-                                        <a href="#">  Share </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="bg-gray-200 max-w-full lg:h-44 h-36 rounded-lg relative overflow-hidden shadow uk-transition-toggle">
-                                <img src="{% static 'assets/images/post/img-2.jpg' %}" class="w-full h-full absolute object-cover inset-0">
-                                <!-- overly-->
-                                <div class="-bottom-12 absolute bg-gradient-to-b from-transparent h-1/2 to-gray-800 uk-transition-slide-bottom-small w-full"></div>
-                                <div class="absolute bottom-0 w-full p-3 text-white uk-transition-slide-bottom-small">
-                                    <div class="text-base"> Image description </div>
-                                    <div class="flex justify-between text-xs">
-                                        <a href="#">  Like</a>
-                                        <a href="#">  Comment </a>
-                                        <a href="#">  Share </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            {% endif %}
+                        {% endfor %}
+                        
                     </div>
 
                     <div class="flex justify-center mt-6">
@@ -717,7 +586,7 @@
                 </div>
 
                 <!-- Pages  -->
-                <div class="card md:p-6 p-2 max-w-3xl mx-auto">
+                <!-- <div class="card md:p-6 p-2 max-w-3xl mx-auto">
 
                     <h2 class="text-xl font-bold"> Pages</h2>
                     <nav class="responsive-nav border-b md:m-0 -mx-4">
@@ -840,10 +709,10 @@
                             Load more ..</a>
                     </div>
 
-                </div>
+                </div> -->
 
                 <!-- Groups  -->
-                <div class="card md:p-6 p-2 max-w-3xl mx-auto">
+                <!-- <div class="card md:p-6 p-2 max-w-3xl mx-auto">
 
                     <div class="flex justify-between items-start relative md:mb-4 mb-3">
                         <div class="flex-1">
@@ -967,10 +836,10 @@
                             Load more ..</a>
                     </div>
 
-                </div>
+                </div> -->
 
                 <!-- Videos -->
-                <div class="card md:p-6 p-2 max-w-3xl mx-auto">
+                <!-- <div class="card md:p-6 p-2 max-w-3xl mx-auto">
 
                     <h2 class="text-xl font-semibold"> Friend</h2>
                     <nav class="responsive-nav border-b">
@@ -1053,11 +922,9 @@
                             Load more ..</a>
                     </div>
 
-                </div>
-
+                </div> -->
 
             </div>
-
         </div>
     </div>
 

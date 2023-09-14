@@ -381,6 +381,27 @@ $(document).ready(function() {
         })
     });
 
+    // UnFriend User
+    $(document).on("click", "#unfriend", function(){
+        let id = $(this).attr("data-unfriend")
+        console.log(id);
+
+        $.ajax({
+            url: "/unfriend/",
+            dataType: "json",
+            data: {
+                "id":id
+            },
+            success: function(response){
+                console.log(response);
+                $("#unfriend-text").html("<i class='fas fa-check-circle'></i> Friend Removed ")
+                $(".unfriend"+id).addClass("bg-blue-600")
+                $(".unfriend"+id).removeClass("bg-red-600")
+            }
+        })
+    })
+
+
 });
 
 
