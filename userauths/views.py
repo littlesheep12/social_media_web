@@ -109,6 +109,7 @@ def friend_profile(request, username):
         "profile" : profile,
         "posts" : posts,
         "bool" : bool,
+        "bool_friend" : bool_friend,
     }
 
     return render(request, "userauths/friend-profile.html", context)

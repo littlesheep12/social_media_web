@@ -5,11 +5,30 @@ from django.utils.timesince import timesince
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 
-from core.models import Post, Comment, ReplyComment, Friend, FriendRequest
+from core.models import Post, Comment, ReplyComment, Friend, FriendRequest, Notification
 from userauths.models import User
 
 import shortuuid
-# Create your views here.
+
+
+# Notifications Keys
+noti_friend_request = "Friend Request"
+noti_friend_request_accepted = "Friend Request Accepted"
+noti_new_follower = "New Follower"
+noti_new_like = "New Like"
+noti_new_comment = "New Comment"
+noti_comment_liked = "Comment Liked"
+noti_comment_replied = "Comment Replied"
+
+def send_notification(user, sender, post, comment, notification_type):
+    notification = Notification.objects.create(
+        user=user, 
+        sender=sender, 
+        post=post, 
+        comment=comment, 
+        notification_type=notification_type
+    )
+    return notification
 
 @login_required
 def index(request):
@@ -25,7 +44,6 @@ def post_detail(request, slug):
     post = Post.objects.get(active=True, visibility="Everyone", slug=slug)
     context = {"p":post}
     return render(request, "core/post-detail.html", context)
-
 
 @csrf_exempt
 def create_post(request):
@@ -46,7 +64,6 @@ def create_post(request):
             post = Post(title=title, image=image, visibility=visibility, user=request.user, slug=slugify(title) + "-" + str(uniqueid.lower()))
             post.save()
 
-            
             return JsonResponse({'post': {
                 'title': post.title,
                 'image_url': post.image.url,
@@ -60,6 +77,7 @@ def create_post(request):
 
     return JsonResponse({"data":"Sent"})
 
+@csrf_exempt
 def like_post(request):
     id = request.GET['id']
     post = Post.objects.get(id = id)
@@ -67,11 +85,16 @@ def like_post(request):
     bool = False
 
     if user in post.likes.all():
-        post.likes.remove(user) # already have save() function method
+        post.likes.remove(user)
         bool = False
     else:
         post.likes.add(user)
         bool = True
+        
+        # Notification
+        if post.user != request.user:
+            send_notification(post.user, user, post, None, noti_new_like)
+
     
     data = {
         "bool":bool,
@@ -79,7 +102,7 @@ def like_post(request):
     }
     return JsonResponse({"data":data}) #key:values
 
-
+@csrf_exempt
 def comment_on_post(request):
     id = request.GET['id']
     comment = request.GET['comment']
@@ -93,6 +116,10 @@ def comment_on_post(request):
         user=user
     )
 
+    # Notifications system
+    if new_comment.user != post.user:
+        send_notification(post.user, user, post, new_comment, noti_new_comment)
+
     data = {
         "bool":True,
         'comment':new_comment.comment,
@@ -105,6 +132,7 @@ def comment_on_post(request):
     return JsonResponse({"data":data})
 
 # Like Comment
+@csrf_exempt
 def like_comment(request):
     id = request.GET["id"]
     comment = Comment.objects.get(id = id)
@@ -117,6 +145,10 @@ def like_comment(request):
     else:
         comment.likes.add(user)
         bool = True
+
+        # Notifications system
+        if comment.user != user:
+            send_notification(comment.user, user, comment.post, comment, noti_comment_liked)
     
     data = {
         "bool" : bool,
@@ -125,6 +157,7 @@ def like_comment(request):
     return JsonResponse({"data":data})
 
 # Reply Comment
+@csrf_exempt
 def reply_comment(request):
     id = request.GET['id']
     reply = request.GET['reply']
@@ -138,9 +171,9 @@ def reply_comment(request):
         user=user
     )
 
-    # # Notifications system
-    # if comment.user != user:
-    #     send_notification(comment.user, user, comment.post, comment, noti_comment_replied)
+    # Notifications system
+    if comment.user != user:
+        send_notification(comment.user, user, comment.post, comment, noti_comment_replied)
 
     data = {
         "bool":True,
@@ -154,6 +187,7 @@ def reply_comment(request):
     return JsonResponse({"data":data})
 
 # Delete Comment
+@csrf_exempt
 def delete_commnet(request):
     id = request.GET['id']
     comment = Comment.objects.get(id=id)
@@ -166,6 +200,7 @@ def delete_commnet(request):
     return JsonResponse({"data":data})
 
 # Add Friend
+@csrf_exempt
 def add_friend(request):
     sender = request.user
     receiver_id = request.GET['id']
@@ -187,6 +222,10 @@ def add_friend(request):
         friend_request = FriendRequest(sender=sender, receiver=receiver)
         friend_request.save()
         bool = True
+
+        # Notifications system
+        send_notification(receiver, sender, None, None, noti_friend_request)
+
         return JsonResponse({"success" : "Sent", "bool" : bool}) 
 
 @csrf_exempt
@@ -202,6 +241,8 @@ def accept_friend_request(request):
     sender.profile.friends.add(receiver)
 
     friend_request.delete()
+    
+    send_notification(sender, receiver, None, None, noti_friend_request_accepted)
 
     data = {
         "message":"Accepted",

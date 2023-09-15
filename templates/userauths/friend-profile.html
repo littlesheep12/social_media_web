@@ -44,7 +44,7 @@
                     </div>
 
                     <div class="profile_info">
-                        <h1> {{ profile.full_name }} </h1>
+                        <h1 class="text-center"> {{ profile.full_name }} </h1>
                         <p class="text-center"> {{ profile.bio }}</p>
                     </div>
 
@@ -152,8 +152,7 @@
                         <!-- Post Div -->
                         <div class="post-div">
                             {% for p in posts  %}
-                                <div class="card lg:mx-0 uk-animation-slide-bottom-small mt-3 mb-3">
-
+                                <div class="card lg:mx-0 uk-animation-slide-bottom-small mb-3">
                                     <!-- post header-->
                                     <div class="flex justify-between items-center lg:p-4 p-2.5">
                                         <div class="flex flex-1 items-center space-x-4">
@@ -395,14 +394,14 @@
                                     Live In <strong> <a href="" class="dashed">Not added yet</a>  </strong>
                                     {% endif %}
                                 </li>
-                                <li class="flex items-center space-x-2">
+                                <!-- <li class="flex items-center space-x-2">
                                     <ion-icon name="globe" class="rounded-full bg-gray-200 text-xl p-1 mr-3"></ion-icon>
                                     {% if profile.country and profile.city %}
                                     Live In <strong> {{profile.city}}, {{profile.country}}  </strong>
                                     {% else %}
                                     From <strong> <a href="" class="dashed">Not added yet</a>  </strong>
                                     {% endif %}
-                                </li>
+                                </li> -->
                                 <li class="flex items-center space-x-2">
                                     <ion-icon name="heart-sharp" class="rounded-full bg-gray-200 text-xl p-1 mr-3"></ion-icon>
                                     Relationship <strong> {{profile.relationship|title}}  </strong>
@@ -412,12 +411,6 @@
                                     Followed By <strong> {{profile.followers.all.count}} People </strong>
                                 </li>
                             </ul>
-                            <div class="gap-3 grid grid-cols-3 mt-4">
-                                <img src="assets/images/avatars/avatar-lg-2.jpg" alt="" class="object-cover rounded-lg col-span-full">
-                                <img src="assets/images/avatars/avatar-2.jpg" alt="" class="rounded-lg">
-                                <img src="assets/images/avatars/avatar-4.jpg" alt="" class="rounded-lg">
-                                <img src="assets/images/avatars/avatar-5.jpg" alt="" class="rounded-lg">
-                            </div>
                             <a href="#" class="button gray mt-3 w-full"> Edit </a>
                         </div>
 

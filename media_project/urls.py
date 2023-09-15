@@ -24,6 +24,7 @@ urlpatterns = [
     # Routing
     path("user/", include("userauths.urls")),
     path("", include("core.urls")),
+    path("addon/", include("addon.urls")),
 ]
 
 if settings.DEBUG:

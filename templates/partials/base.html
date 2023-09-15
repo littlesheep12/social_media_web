@@ -128,7 +128,7 @@
                         <div class="header_widgets">
                             <!-- Friend Request -->
                             <a href="#" class="is_icon" uk-tooltip="title: Friend Requests">
-                                <i class="fas fa-user-plus text-gray-800"></i>
+                                <i class="fas fa-user text-gray-800"></i>
                                 <span>{{ friend_request.all.count }}</span>
                             </a>
                             <div uk-drop="mode: click" class="header_dropdown">
@@ -175,12 +175,12 @@
                             <!-- Notification -->
                             <a href="#" class="is_icon" uk-tooltip="title: Notifications">
                                 <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path></svg>
-                                <span>3</span>
+                                <span>{{ notification.count }}</span>
                             </a>
                             <div uk-drop="mode: click" class="header_dropdown">
                                 <div class="dropdown_scrollbar" data-simplebar>
                                     <div class="drop_headline">
-                                        <h4>Notifications </h4>
+                                        <h4>Notifications</h4>
                                         <div class="btn_action">
                                             <a href="#" data-tippy-placement="left" title="Notifications">
                                                 <ion-icon name="settings-outline"></ion-icon>
@@ -191,165 +191,67 @@
                                         </div>
                                     </div>
                                     <ul>
-                                        <li>
+                                        {% for n in notification %}
+                                            <li class="{% if n.is_read == False %}not-read{% endif %} mb-3 mt-3">
+                                                <a href="#">
+                                                    <div class="drop_avatar">
+                                                        <img src="{{n.sender.profile.image.url}}" alt="">
+                                                    </div>
+                                                    <span class="drop_icon bg-gradient-primary">
+                                                        
+                                                        {% if n.notification_type == "New Like" %}<i class="icon-feather-thumbs-up"></i>{% endif %}
+                                                        {% if n.notification_type == "New Comment" %}<i class="icon-feather-message-square"></i>{% endif %}
+                                                        {% if n.notification_type == "Comment Liked" %}<i class="icon-feather-thumbs-up"></i>{% endif %}
+                                                        {% if n.notification_type == "Comment Replied" %}<i class="icon-feather-message-square"></i>{% endif %}
+                                                        {% if n.notification_type == "New Follower" %}<i class="icon-feather-user-plus"></i>{% endif %}
+                                                        {% if n.notification_type == "New Follower" %}<i class="icon-feather-user-plus"></i>{% endif %}
+                                                        {% if n.notification_type == "Friend Request Accepted" %}<i class="icon-feather-check-circle"></i>{% endif %}
+                                                        {% if n.notification_type == "Friend Request" %}<i class="icon-feather-user-plus"></i>{% endif %}
+                                                            
+                                                    </span>
+                                                    <div class="drop_text">
+                                                        <p>
+                                                            <strong>{{n.sender.profile.full_name|title}}</strong> 
+                                                            
+                                                            {% if n.notification_type == "New Like" %} Liked your post {% endif %}
+                                                            {% if n.notification_type == "New Comment" %} Commented on your post {% endif %}
+                                                            {% if n.notification_type == "Comment Liked" %} Liked your comment on {% endif %}
+                                                            {% if n.notification_type == "Comment Replied" %} Replied your comment on {% endif %}
+                                                            {% if n.notification_type == "New Follower" %} Just Followed You {% endif %}
+                                                            {% if n.notification_type == "Friend Request Accepted" %} Accepted Your Friend Request {% endif %}
+                                                            {% if n.notification_type == "Friend Request" %} Sent you a friend Request  {% endif %}
+                                                            
+                                                            {% if n.post %}
+                                                                <span class="text-link">{{ n.post.title|truncatechars:20 }}</span>
+                                                            {% endif %}
+                                                                
+                                                        </p>
+                                                        <time> <small>{{n.date|timesince}} ago</small> </time>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+
+                                        <!-- <li class="not-read">
                                             <a href="#">
-                                                <div class="drop_avatar">
-                                                    <img src="{% static 'assets/images/avatars/avatar-1.jpg' %}" alt="">
-                                                </div>
-                                                <span class="drop_icon bg-gradient-primary">
-                                                     <i class="icon-feather-thumbs-up"></i>
-                                                 </span>
-                                                <div class="drop_text">
-                                                    <p>
-                                                        <strong>Adrian Mohani</strong> Like Your Comment On Video
-                                                        <span class="text-link">Learn Prototype Faster </span>
-                                                    </p>
-                                                    <time> 2 hours ago </time>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li class="not-read">
-                                            <a href="#">
-                                                <div class="drop_avatar status-online"> <img src="{% static 'assets/images/avatars/avatar-2.jpg' %}" alt="">
-                                                </div>
-                                                <div class="drop_text">
-                                                    <p>
-                                                        <strong>Stella Johnson</strong> Replay Your Comments in
-                                                        <span class="text-link">Adobe XD Tutorial</span>
-                                                    </p>
-                                                    <time> 9 hours ago </time>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <div class="drop_avatar"> <img src="{% static 'assets/images/avatars/avatar-3.jpg' %}" alt="">
-                                                </div>
-                                                <span class="drop_icon bg-gradient-primary">
-                                                    <i class="icon-feather-thumbs-up"></i>
-                                                </span>
-                                                <div class="drop_text">
-                                                    <p>
-                                                        <strong>Alex Dolgove</strong> Added New Review In Video
-                                                        <span class="text-link">Full Stack PHP Developer</span>
-                                                    </p>
-                                                    <time> 12 hours ago </time>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <div class="drop_avatar"> <img src="{% static 'assets/images/avatars/avatar-1.jpg' %}" alt="">
+                                                <div class="drop_avatar status-online"> <img src="{{request.user.profile.image.url}}" alt="">
                                                 </div>
                                                 <div class="drop_text">
                                                     <p>
-                                                        <strong>Jonathan Madano</strong> Shared Your Discussion On Video
-                                                        <span class="text-link">Css Flex Box </span>
-                                                    </p>
-                                                    <time> Yesterday </time>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <div class="drop_avatar"> <img src="{% static 'assets/images/avatars/avatar-1.jpg' %}" alt="">
-                                                </div>
-                                                <span class="drop_icon bg-gradient-primary">
-                                                    <i class="icon-feather-thumbs-up"></i>
-                                                </span>
-                                                <div class="drop_text">
-                                                    <p>
-                                                        <strong>Adrian Mohani</strong> Like Your Comment On Course
-                                                        <span class="text-link">Javascript Introduction </span>
-                                                    </p>
-                                                    <time> 2 hours ago </time>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <div class="drop_avatar status-online"> <img src="{% static 'assets/images/avatars/avatar-2.jpg' %}" alt="">
-                                                </div>
-                                                <div class="drop_text">
-                                                    <p>
-                                                        <strong>Stella Johnson</strong> Replay Your Comments in
-                                                        <span class="text-link">Programming for Games</span>
+                                                        <strong>{{request.user.profile.full_name}}</strong> Replay Your Comments in
+                                                        <span class="text-link">{{request.user.profile.bio|title}}</span>
                                                     </p>
                                                     <time> 9 hours ago </time>
                                                 </div>
                                             </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <div class="drop_avatar"> <img src="{% static 'assets/images/avatars/avatar-2.jpg' %}" alt="">
-                                                </div>
-                                                <div class="drop_text">
-                                                    <p>
-                                                        <strong>Stella Johnson</strong> Replay Your Comments in
-                                                        <span class="text-link">Programming for Games</span>
-                                                    </p>
-                                                    <time> 9 hours ago </time>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <div class="drop_avatar"> <img src="{% static 'assets/images/avatars/avatar-3.jpg' %}" alt="">
-                                                </div>
-                                                <div class="drop_text">
-                                                    <p>
-                                                        <strong>Alex Dolgove</strong> Added New Review In Course
-                                                        <span class="text-link">Full Stack PHP Developer</span>
-                                                    </p>
-                                                    <time> 12 hours ago </time>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <div class="drop_avatar"> <img src="{% static 'assets/images/avatars/avatar-1.jpg' %}" alt="">
-                                                </div>
-                                                <div class="drop_text">
-                                                    <p>
-                                                        <strong>Jonathan Madano</strong> Shared Your Discussion On Course
-                                                        <span class="text-link">Css Flex Box </span>
-                                                    </p>
-                                                    <time> Yesterday </time>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <div class="drop_avatar"> <img src="{% static 'assets/images/avatars/avatar-1.jpg' %}" alt="">
-                                                </div>
-                                                <div class="drop_text">
-                                                    <p>
-                                                        <strong>Adrian Mohani</strong> Like Your Comment On Course
-                                                        <span class="text-link">Javascript Introduction </span>
-                                                    </p>
-                                                    <time> 2 hours ago </time>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <div class="drop_avatar"> <img src="{% static 'assets/images/avatars/avatar-2.jpg' %}" alt="">
-                                                </div>
-                                                <div class="drop_text">
-                                                    <p>
-                                                        <strong>Stella Johnson</strong> Replay Your Comments in
-                                                        <span class="text-link">Programming for Games</span>
-                                                    </p>
-                                                    <time> 9 hours ago </time>
-                                                </div>
-                                            </a>
-                                        </li>
+                                        </li> -->
+                                        
                                     </ul>
                                 </div>
                             </div>
 
                             <!-- Message -->
-                            <a href="#" class="is_icon" uk-tooltip="title: Message">
+                            <!-- <a href="#" class="is_icon" uk-tooltip="title: Message">
                                 <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z" clip-rule="evenodd"></path></svg>
                                 <span>4</span>
                             </a>
@@ -451,7 +353,7 @@
                                     </ul>
                                 </div>
                                 <a href="#" class="see-all"> See all in Messages</a>
-                            </div>
+                            </div> -->
 
                             <!-- User Card -->
                             <a href="#">
@@ -521,7 +423,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-blue-600"> 
                                 <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
                             </svg>
-                            <span> Feed </span> 
+                            <span> Main </span> 
                         </a>
                     </li>
                     <li id="active">
@@ -613,8 +515,9 @@
                         See Less 
                     </span>
                 </a> -->
-
-                <h3 class="side-title"> Contacts </h3>
+                
+                <!-- Future Features -->
+                <!-- <h3 class="side-title"> Contacts </h3>
 
                 <div class="contact-list my-2 ml-1">
 
@@ -645,7 +548,7 @@
                         <div class="contact-username"> Alex Dolgove</div>
                     </a>
 
-                </div>
+                </div> -->
 
                 <ul class="side_links" data-sub-title="Pages">
                     <li>
@@ -697,9 +600,9 @@
                     <a href="#">Blog</a>
                     <a href="#">Careers</a>
                     <a href="#">Support</a>
-                    <a href="#">Contact Us </a>
-                    <a href="#">Developer</a>
-                    <a href="#">Terms of service</a>
+                    <!-- <a href="#">Contact Us </a> -->
+                    <a href="https://littlesheep12.github.io/leoyang.github.io/en/about/">Developer</a>
+                    <!-- <a href="#">Terms of service</a> -->
                 </div>
 
             </div>
