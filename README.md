@@ -18,15 +18,21 @@
 ![main](https://github.com/littlesheep12/social_media_web/blob/main/readme/main_page.png "main")
 
 ### Post
-![create_post](https://github.com/littlesheep12/social_media_web/blob/main/readme/create_post.png "create_post")
-![full_post](https://github.com/littlesheep12/social_media_web/blob/main/readme/Full_Post_Page.png "full_post")
+<p align="center">
+  <img src="https://github.com/littlesheep12/social_media_web/blob/main/readme/create_post.png" />
+  <img src="https://github.com/littlesheep12/social_media_web/blob/main/readme/Full_Post_Page.png" />
+</p>
 
 
 ### Notification
-![notification](https://github.com/littlesheep12/social_media_web/blob/main/readme/Notifications.png "notification")
+<p align="center">
+  <img src="https://github.com/littlesheep12/social_media_web/blob/main/readme/Notifications.png" />
+</p>
 
 ### Friend Request
-![friend_request](https://github.com/littlesheep12/social_media_web/blob/main/readme/Friend%20Request.png "friend_request")
+<p align="center">
+  <img src="https://github.com/littlesheep12/social_media_web/blob/main/readme/Friend%20Request.png" />
+</p>
 
 ### Profile
 ![user](https://github.com/littlesheep12/social_media_web/blob/main/readme/user_profile.png "user")
