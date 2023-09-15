@@ -26,7 +26,7 @@
 ![notification](https://github.com/littlesheep12/social_media_web/blob/main/readme/Notifications.png "notification")
 
 ### Friend Request
-![friend_request](https://github.com/littlesheep12/social_media_web/blob/main/readme/Friend Request.png "friend_request")
+![friend_request](https://github.com/littlesheep12/social_media_web/blob/main/readme/Friend%20Request.png "friend_request")
 
 ### Profile
 ![user](https://github.com/littlesheep12/social_media_web/blob/main/readme/user_profile.png "user")
