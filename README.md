@@ -15,12 +15,18 @@
 
 ### Main
 - The main interface consists of a side navigation bar, a message alert bar on the top and the post content in the middle.
-#### Post
 ![main](https://github.com/littlesheep12/social_media_web/blob/main/readme/main_page.png "main")
-#### Notification
+
+### Post
+![create_post](https://github.com/littlesheep12/social_media_web/blob/main/readme/create_post.png "create_post")
+![full_post](https://github.com/littlesheep12/social_media_web/blob/main/readme/Full_Post_Page.png "full_post")
+
+
+### Notification
 ![notification](https://github.com/littlesheep12/social_media_web/blob/main/readme/Notifications.png "notification")
-#### Friend Request
-![friend_request](https://github.com/littlesheep12/social_media_web/blob/main/readme/friend_request.png "friend_request")
+
+### Friend Request
+![friend_request](https://github.com/littlesheep12/social_media_web/blob/main/readme/Friend Request.png "friend_request")
 
 ### Profile
 ![user](https://github.com/littlesheep12/social_media_web/blob/main/readme/user_profile.png "user")
